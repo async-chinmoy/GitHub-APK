@@ -4,44 +4,66 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<User?> signUp(String email, String password) async {
-    final cred = await _auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    try {
+      final cred = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-    final user = cred.user;
+      final user = cred.user;
 
-    if (user != null) {
-      try {
+      if (user != null && !user.emailVerified) {
         await user.sendEmailVerification();
-      } catch (e) {
-        print("Error sending email verification: $e");
+        print("Verification email sent to ${user.email}");
       }
-    }
 
-    return user;
+      return user;
+    } on FirebaseAuthException catch (e) {
+      print("Signup error: ${e.code} - ${e.message}");
+      rethrow; // propagate to UI
+    } catch (e) {
+      print("Unexpected signup error: $e");
+      rethrow;
+    }
   }
 
   Future<User?> login(String email, String password) async {
-    final cred = await _auth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-
-    final user = cred.user;
-
-    if (user != null && !user.emailVerified) {
-      throw FirebaseAuthException(
-        code: 'email-not-verified',
-        message:
-            'Email not verified. Please check your inbox and verify your email.',
+    try {
+      final cred = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
       );
-    }
 
-    return user;
+      final user = cred.user;
+
+      if (user != null && !user.emailVerified) {
+        await _auth.signOut();
+        throw FirebaseAuthException(
+          code: 'email-not-verified',
+          message:
+              'Email not verified. Please check your inbox and verify your email.',
+        );
+      }
+
+      return user;
+    } on FirebaseAuthException catch (e) {
+      print("Login error: ${e.code} - ${e.message}");
+      rethrow;
+    } catch (e) {
+      print("Unexpected login error: $e");
+      rethrow;
+    }
   }
 
   Future<void> logout() async {
-    await _auth.signOut();
+    try {
+      await _auth.signOut();
+      print("User logged out successfully.");
+    } catch (e) {
+      print("Logout error: $e");
+      rethrow;
+    }
   }
+
+  User? get currentUser => _auth.currentUser;
 }

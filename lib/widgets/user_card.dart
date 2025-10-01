@@ -8,12 +8,20 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(contributor.avatarUrl),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(129, 106, 110, 131),
+        borderRadius: BorderRadius.circular(15),
       ),
-      title: Text(contributor.username),
-      subtitle: Text("Contributions: ${contributor.contributions}"),
+      child: ListTile(
+        
+        leading: CircleAvatar(
+          backgroundImage: NetworkImage(contributor.avatarUrl),
+        ),
+        title: Text(contributor.username),
+        subtitle: Text("Contributions: ${contributor.contributions}"),
+      ),
     );
   }
 }

@@ -5,6 +5,7 @@ class Repo {
   final int stars;
   final String language;
   final String url;
+  final String ownerAvatarUrl;
 
   Repo({
     required this.name,
@@ -13,6 +14,7 @@ class Repo {
     required this.stars,
     required this.language,
     required this.url,
+    required this.ownerAvatarUrl,
   });
 
   factory Repo.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class Repo {
       stars: json['stargazers_count'] ?? 0,
       language: json['language'] ?? 'Unknown',
       url: json['html_url'] ?? '',
+      ownerAvatarUrl: json['owner']?['avatar_url'] ?? '',
     );
   }
 }

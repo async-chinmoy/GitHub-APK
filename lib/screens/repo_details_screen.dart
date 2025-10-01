@@ -3,6 +3,7 @@ import '../models/repo.dart';
 import '../services/github_service.dart';
 import '../models/contributor.dart';
 import '../widgets/user_card.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class RepoDetailsScreen extends StatefulWidget {
   final Repo repo;
@@ -55,7 +56,13 @@ class _RepoDetailsScreenState extends State<RepoDetailsScreen> {
       future: _contributors,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return  Center(
+              child: LoadingAnimationWidget.flickr(
+                leftDotColor: const Color(0xFF1A1A3F),
+                rightDotColor: const Color(0xFFEA3799),
+                size: 60,
+              ),
+            );;
         } else if (snapshot.hasError) {
           return Center(child: Text("Error: ${snapshot.error}"));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -77,7 +84,13 @@ class _RepoDetailsScreenState extends State<RepoDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.repo.name)),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          widget.repo.name,
+          style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

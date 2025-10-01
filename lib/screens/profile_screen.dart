@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/github_service.dart';
 import '../models/user.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -33,7 +34,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("GitHub Profile")),
+      appBar: AppBar(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+
+          children: [
+            const Text(
+              "Profile",
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 2.5,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              "Search GitHub Users",
+              style: TextStyle(fontSize: 16, color: Colors.grey[400]),
+            ),
+          ],
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -49,27 +70,93 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            if (_loading) const CircularProgressIndicator(),
+            if (_loading)
+              Center(
+                child: LoadingAnimationWidget.flickr(
+                  leftDotColor: const Color(0xFF1A1A3F),
+                  rightDotColor: const Color(0xFFEA3799),
+                  size: 60,
+                ),
+              ),
             if (_user != null)
-              Column(
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundImage: NetworkImage(_user!.avatarUrl),
+              SizedBox(
+                width: double.infinity,
+                child: Card(
+                  margin: const EdgeInsets.all(12),
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    _user!.username,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundImage: NetworkImage(_user!.avatarUrl),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(_user!.username,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(_user!.bio,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                Text(_user!.followers.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                const Text(
+                                  'Followers',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(_user!.following.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                const Text(
+                                  'Following',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  Text(_user!.bio),
-                  const SizedBox(height: 10),
-                  Text("Followers: ${_user!.followers}"),
-                  Text("Following: ${_user!.following}"),
-                ],
+                ),
               ),
           ],
         ),

@@ -1,0 +1,4 @@
+{
+    "editor.formatOnSave": false,
+    "bazelKotlin.formatting.formatter": "ktlint"
+}

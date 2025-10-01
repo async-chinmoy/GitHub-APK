@@ -23,12 +23,22 @@ class RepoCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                repo.name,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+              Row(
+                children: [
+                  const Icon(Icons.star, color: Color.fromARGB(255, 68, 149, 220), size: 30),
+                   
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      repo.name,
+                      style: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 6),
               Text(

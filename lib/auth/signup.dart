@@ -22,28 +22,30 @@ class _SignupScreenState extends State<SignupScreen> {
       error = "";
     });
     try {
-      await authService.signUp(emailCtrl.text, passCtrl.text);
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: const Text("Verify your email"),
-          content: const Text(
-            "A verification link has been sent to your email. Please verify your email before logging in.",
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("OK"),
+      final user = await authService.signUp(emailCtrl.text, passCtrl.text);
+      if (user != null) {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: const Text("Verify your email"),
+            content: const Text(
+              "A verification link has been sent to your email. Please verify your email before logging in.",
             ),
-          ],
-        ),
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const MainPage()),
-      );
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("OK"),
+              ),
+            ],
+          ),
+        );
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      }
     } catch (e) {
       setState(() => error = e.toString());
+      print(error);
     } finally {
       setState(() => _loading = false);
     }
@@ -60,7 +62,7 @@ class _SignupScreenState extends State<SignupScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
-                "GitHub Explorer",
+                "GitHub Clone",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 32,
