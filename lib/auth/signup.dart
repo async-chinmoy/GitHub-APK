@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../auth/auth.dart';
-import '../main.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -24,7 +23,7 @@ class _SignupScreenState extends State<SignupScreen> {
     try {
       final user = await authService.signUp(emailCtrl.text, passCtrl.text);
       if (user != null) {
-        showDialog(
+        await showDialog(
           context: context,
           builder: (_) => AlertDialog(
             title: const Text("Verify your email"),
@@ -33,14 +32,16 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => Navigator.pop(context), 
                 child: const Text("OK"),
               ),
             ],
           ),
         );
         if (mounted) {
-          Navigator.pop(context);
+          Navigator.pop(
+            context,
+          ); 
         }
       }
     } catch (e) {
@@ -62,7 +63,16 @@ class _SignupScreenState extends State<SignupScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
-                "GitHub Clone",
+                "One of us? Join",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const Text(
+                "GitPeek 👀",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 32,

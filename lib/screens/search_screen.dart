@@ -45,7 +45,7 @@ class _SearchScreenState extends State<SearchScreen> {
               "Explore",
               style: TextStyle(
                 fontSize: 40,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.bold, fontFamily: 'Nunito',
                 letterSpacing: 2.5,
               ),
             ),

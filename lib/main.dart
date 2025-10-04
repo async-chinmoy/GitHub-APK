@@ -6,7 +6,7 @@ import 'screens/search_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/starred_screen.dart';
 import 'auth/login.dart';
-
+import 'package:animations/animations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -22,11 +22,12 @@ class GitHubApp extends StatelessWidget {
       title: 'GitHub ',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: 'Nunito',
         brightness: Brightness.dark,
         primaryColor: const Color.fromARGB(255, 10, 64, 127),
         scaffoldBackgroundColor: const Color.fromARGB(192, 0, 1, 5),
         appBarTheme: const AppBarTheme(
-          toolbarHeight: 150,
+          toolbarHeight: 100,
           centerTitle: true,
           backgroundColor: Color.fromARGB(177, 86, 90, 118),
           elevation: 0,
@@ -38,7 +39,7 @@ class GitHubApp extends StatelessWidget {
           titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         cardTheme: CardThemeData(
-          color: const Color.fromARGB(126, 28, 36, 48),
+          color: const Color.fromARGB(255, 43, 45, 60),
           margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -58,8 +59,8 @@ class GitHubApp extends StatelessWidget {
           hintStyle: const TextStyle(color: Colors.grey),
         ),
       ),
-      home: const MainPage(),
-    );
+      home: const AuthWrapper()
+      );
   }
 }
 
@@ -101,7 +102,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentIndex],
+      body:_screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         selectedIconTheme: const IconThemeData(size: 30),
         currentIndex: _currentIndex,

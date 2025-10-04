@@ -5,16 +5,17 @@ class AuthService {
 
   Future<User?> signUp(String email, String password) async {
     try {
-      final cred = await _auth.createUserWithEmailAndPassword(
+      UserCredential cred = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      final user = cred.user;
+      User? user = cred.user;
 
       if (user != null && !user.emailVerified) {
         await user.sendEmailVerification();
         print("Verification email sent to ${user.email}");
+        
       }
 
       return user;
@@ -29,12 +30,12 @@ class AuthService {
 
   Future<User?> login(String email, String password) async {
     try {
-      final cred = await _auth.signInWithEmailAndPassword(
+      UserCredential cred = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      final user = cred.user;
+      User? user = cred.user;
 
       if (user != null && !user.emailVerified) {
         await _auth.signOut();
@@ -58,7 +59,7 @@ class AuthService {
   Future<void> logout() async {
     try {
       await _auth.signOut();
-      print("User logged out successfully.");
+      print("User logged out successfully");
     } catch (e) {
       print("Logout error: $e");
       rethrow;

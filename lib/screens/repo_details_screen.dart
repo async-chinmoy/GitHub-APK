@@ -62,7 +62,7 @@ class _RepoDetailsScreenState extends State<RepoDetailsScreen> {
                 rightDotColor: const Color(0xFFEA3799),
                 size: 60,
               ),
-            );;
+            );
         } else if (snapshot.hasError) {
           return Center(child: Text("Error: ${snapshot.error}"));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

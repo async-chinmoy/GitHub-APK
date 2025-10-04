@@ -6,6 +6,7 @@ class Repo {
   final String language;
   final String url;
   final String ownerAvatarUrl;
+  final int forks;
 
   Repo({
     required this.name,
@@ -15,6 +16,7 @@ class Repo {
     required this.language,
     required this.url,
     required this.ownerAvatarUrl,
+    required this.forks,
   });
 
   factory Repo.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class Repo {
       language: json['language'] ?? 'Unknown',
       url: json['html_url'] ?? '',
       ownerAvatarUrl: json['owner']?['avatar_url'] ?? '',
+      forks: json['forks_count']??0,
     );
   }
 }

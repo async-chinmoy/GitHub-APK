@@ -3,6 +3,8 @@ import '../services/github_service.dart';
 import '../models/repo.dart';
 import '../widgets/repo_card.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import '../auth/auth.dart';
+import '../auth/login.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GitHubService _service = GitHubService();
   late Future<List<Repo>> _trendingRepos;
+  final AuthService _auth = AuthService();
 
   @override
   void initState() {
@@ -25,22 +28,46 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              "Home",
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900,
-              letterSpacing: 2.5),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  "Home",
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Nunito',
+                    letterSpacing: 2.5,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  "Trending Repositories",
+                  style: TextStyle(fontSize: 16, color: Colors.grey[400]),
+                ),
+              ],
             ),
-            SizedBox(height: 8),
-            Text(
-              "Trending Repositories",
-              style: TextStyle(fontSize: 16, color: Colors.grey[400]),
+            ElevatedButton.icon(
+              icon: Icon(Icons.logout),
+              label: Text('Logout'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.redAccent,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () async {
+                await _auth.logout();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  (route) => false,
+                );
+              },
             ),
           ],
         ),
-       
       ),
       body: FutureBuilder<List<Repo>>(
         future: _trendingRepos,

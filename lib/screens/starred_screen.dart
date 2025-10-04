@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:github/widgets/search_bar.dart';
 import '../services/github_service.dart';
 import '../models/repo.dart';
 import '../widgets/repo_card.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import '../widgets/search_bar.dart';
 
 class StarredScreen extends StatefulWidget {
   const StarredScreen({super.key});
@@ -17,7 +19,7 @@ class _StarredScreenState extends State<StarredScreen> {
   List<Repo> _repos = [];
   bool _loading = false;
 
-  void _fetchStarred() async {
+  void _fetchStarred(String query) async {
     if (_controller.text.isEmpty) return;
     setState(() => _loading = true);
     try {
@@ -42,7 +44,7 @@ class _StarredScreenState extends State<StarredScreen> {
               "Starred repos",
               style: TextStyle(
                 fontSize: 40,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.bold, fontFamily: 'Nunito',
                 letterSpacing: 2.5,
               ),
             ),
@@ -58,16 +60,7 @@ class _StarredScreenState extends State<StarredScreen> {
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                hintText: "Enter GitHub username",
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: _fetchStarred,
-                ),
-              ),
-            ),
+            SearchBarWidget(controller: _controller, onSearch: _fetchStarred),
             const SizedBox(height: 12),
             Expanded(
               child: _loading

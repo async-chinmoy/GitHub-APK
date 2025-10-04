@@ -18,6 +18,19 @@ class GitHubService {
     throw Exception("Failed to fetch repositories");
   }
 
+Future<List<Repo>> userRepos(String username) async {
+  final response = await http.get(
+    Uri.parse("$baseUrl/users/$username/repos"),
+  );
+
+  if (response.statusCode == 200) {
+    final List<dynamic> data = json.decode(response.body);
+    return data.map((e) => Repo.fromJson(e)).toList();
+  }
+
+  throw Exception("Failed to fetch user's repos!");
+}
+
   Future<List<Repo>> getTrendingRepositories() async {
     final response = await http.get(
       Uri.parse("$baseUrl/search/repositories?q=flutter&sort=stars&order=desc"),

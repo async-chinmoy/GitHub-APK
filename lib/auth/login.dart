@@ -50,7 +50,16 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
-                "GitHub Explorer",
+                "Welcome Back !",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const Text(
+                "GitPeek 👀",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 32,

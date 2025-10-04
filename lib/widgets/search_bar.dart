@@ -18,7 +18,7 @@ class SearchBarWidget extends StatelessWidget {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.search, color: Colors.grey),
-        hintText: "Search Repositories...",
+        hintText: "Search..... ",
         hintStyle: const TextStyle(color: Colors.grey),
       ),
     );
